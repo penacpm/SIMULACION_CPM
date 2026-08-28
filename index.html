@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peña CPM - Dashboard Oficial Pro</title>
+    <style>
+        :root {
+            --bg-color: #0b132b;
+            --card-bg: #1c2541;
+            --accent: #00b4d8;
+            --text: #ffffff;
+            --text-dim: #a0aec0;
+            --green: #2ecc71;
+            --yellow: #f1c40f;
+            --red: #e74c3c;
+            --border: #2d3748;
+        }
+
+        body.light-mode {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --accent: #0077b6;
+            --text: #1a202c;
+            --text-dim: #4a5568;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h1 { margin: 0; font-size: 2.2rem; letter-spacing: 2px; }
+
+        .theme-btn {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--accent);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--accent);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .sub-nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--accent);
+        }
+
+        .sub-tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .sub-tab-btn.active, .sub-tab-btn:hover {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .tab-content, .sub-tab-content { display: none; }
+        .tab-content.active, .sub-tab-content.active { display: block; }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 1px solid var(--border);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .controls-row select {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        th { background-color: rgba(0, 180, 216, 0.15); }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text);
+            border: 1px solid var(--accent);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .bote-box {
+            font-size: 2.5rem;
+            color: var(--green);
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .status-played { background-color: var(--green); color: black; }
+        .status-pending { background-color: var(--yellow); color: black; }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .calendar-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .teams-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .team-column {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .team-header {
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed var(--accent);
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-goal-item {
+            font-size: 0.88rem;
+            padding: 3px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.05);
+        }
+
+        .goal-count {
+            font-weight: bold;
+            color: var(--yellow);
+            background: rgba(241, 196, 15, 0.15);
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 2px;
+            font-size: 0.8rem;
+        }
+
+        .goal-count.own-goal {
+            color: #ffffff;
+            background: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        .next-match-card {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(0, 0, 0, 0));
+            border: 2px solid var(--accent);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .badge-trophy {
+            display: inline-block;
+            background: rgba(241, 196, 15, 0.2);
+            border: 1px solid var(--yellow);
+            color: var(--yellow);
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin: 3px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .player-score-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 0.8fr;
+            gap: 5px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-bote {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .checkbox-bote input {
+            width: auto;
+            margin: 0;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .edit-btn { background-color: var(--accent); color: white; margin-right: 5px; }
+        .delete-btn { background-color: var(--red); color: white; }
+
+        .player-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+
+        .racha-pill {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.7rem;
+            margin: 0 1px;
+        }
+        .racha-G { background: var(--green); color: black; }
+        .racha-E { background: var(--yellow); color: black; }
+        .racha-P { background: var(--red); color: white; }
+        .racha-NO { background: rgba(255,255,255,0.1); color: var(--text-dim); }
+
+        .sorteo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .equipo-res-box {
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+        }
+
+        .stats-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .stat-card-mini {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-card-mini .val {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-card-mini .lbl {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .sustituto-badge {
+            background: rgba(0, 180, 216, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 6px;
+        }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .compare-column {
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .rachas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .racha-row-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .racha-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .racha-box h4 {
+            margin-top: 0;
+            color: var(--accent);
+            border-bottom: 1px dashed var(--accent);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .racha-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .racha-row-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .form-grid, .compare-grid { grid-template-columns: 1fr; }
+            .player-score-row { grid-template-columns: 1.5fr 1fr 1fr 0.8fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>⚽ PEÑA CPM</h1>
+            <p style="color: var(--text-dim); margin: 5px 0 0 0;">Panel de Control y Estadísticas Avanzadas</p>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()">☀️ / 🌙 Modo</button>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" onclick="showTab('calendario', event)">Calendario y Resultados</button>
+        <button class="tab-btn" onclick="showTab('clasificacion', event)">Clasificación</button>
+        <button class="tab-btn" onclick="showTab('pichichi', event)">Pichichi</button>
+        <button class="tab-btn" onclick="showTab('comparar', event)">Comparar Jugadores</button>
+        <button class="tab-btn" onclick="showTab('contabilidad', event)">Contabilidad</button>
+        <button class="tab-btn" onclick="showTab('rachas', event)">Rachas</button>
+        <button class="tab-btn" onclick="showTab('jugadores', event)">Ficha Jugadores</button>
+        <button class="tab-btn" onclick="accederPrivado(event)">🔒 PRIVADO</button>
+    </nav>
+
+    <div id="calendario" class="tab-content active">
+        <div class="next-match-card">
+            <h3>⏳ PRÓXIMO PARTIDO: Jornada <span id="next-jornada-num">1</span></h3>
+            <p><b>Fecha:</b> <span id="next-jornada-fecha">2 de septiembre de 2026</span></p>
+        </div>
+
+        <div class="card">
+            <h2>📅 Calendario General (34 Jornadas)</h2>
+            <div id="calendar-container" class="calendar-grid"></div>
+        </div>
+    </div>
+
+    <div id="clasificacion" class="tab-content">
+        <div class="card">
+            <h2>Tabla General de Jugadores</h2>
+            <div class="controls-row">
+                <select id="sort-clasificacion-criterio" onchange="renderClasificacion()">
+                    <option value="pts">Ordenar por: Puntos</option>
+                    <option value="winrate">Ordenar por: % Victorias (Win Rate)</option>
+                    <option value="gf">Ordenar por: Goles a Favor</option>
+                    <option value="gc">Ordenar por: Goles en Contra</option>
+                    <option value="dg">Ordenar por: Diferencia de Goles</option>
+                    <option value="pj">Ordenar por: Partidos Jugados</option>
+                    <option value="nombre">Ordenar por: Nombre (Alfabético)</option>
+                </select>
+                <select id="sort-clasificacion-orden" onchange="renderClasificacion()">
+                    <option value="desc">De mayor a menor (Descendente)</option>
+                    <option value="asc">De menor a mayor (Ascendente)</option>
+                </select>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos</th><th>Jugador</th><th>Últimos 5</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>Win %</th><th>Pts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-clasificacion"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="pichichi" class="tab-content">
+        <div class="card">
+            <h2>Tabla de Goleadores</h2>
+            <div class="controls-row">
+                <select id="sort-pichichi-criterio" onchange="renderPichichi()">
+                    <option value="goles">Ordenar por: Goles Totales</option>
+                    <option value="promedio">Ordenar por: Promedio Goles / Partido</option>
+                    <option value="pj">Ordenar por: Partidos Jugados</option>
+                    <option value="nombre">Ordenar por: Nombre (Alfabético)</option>
+                </select>
+                <select id="sort-pichichi-orden" onchange="renderPichichi()">
+                    <option value="desc">De mayor a menor (Descendente)</option>
+                    <option value="asc">De menor a mayor (Ascendente)</option>
+                </select>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>Pos</th><th>Jugador</th><th>Goles Totales</th><th>Promedio Goles / Partido</th></tr>
+                    </thead>
+                    <tbody id="tabla-pichichi"></tbody>
+                </table>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; font-style: italic;">* Nota: Esta clasificación no incluye los goles en propia puerta (autogoles).</p>
+        </div>
+    </div>
+
+    <div id="comparar" class="tab-content">
+        <div class="card">
+            <h2>⚔️ Comparar Jugadores</h2>
+            <div class="form-grid">
+                <div>
+                    <label><b>Jugador A:</b></label>
+                    <select id="compare-j1" onchange="ejecutarComparacion()"></select>
+                </div>
+                <div>
+                    <label><b>Jugador B:</b></label>
+                    <select id="compare-j2" onchange="ejecutarComparacion()"></select>
+                </div>
+            </div>
+            <div id="resultado-comparacion"></div>
+        </div>
+    </div>
+
+    <div id="contabilidad" class="tab-content">
+        <div class="card">
+            <h2>Bote de la Peña CPM</h2>
+            <div class="bote-box" id="bote-total">0,00 €</div>
+            <h3>Historial de Aportaciones y Movimientos</h3>
+            <ul id="lista-bote"></ul>
+        </div>
+    </div>
+
+    <div id="rachas" class="tab-content">
+        <div class="card">
+            <h2>📈 Panel Analítico de Rachas</h2>
+            <p style="color: var(--text-dim); margin-top: 0;">Análisis detallado de rachas activas e históricas de la plantilla (solo computa partidos jugados).</p>
+            <div id="rachas-container" class="rachas-grid"></div>
+        </div>
+    </div>
+
+    <div id="jugadores" class="tab-content">
+        <div class="card">
+            <h2>👤 Ficha Individual del Jugador</h2>
+            <select id="select-jugador" onchange="cargarFichaJugador()"></select>
+            <div id="detalle-jugador"></div>
+        </div>
+    </div>
+
+    <div id="privado" class="tab-content">
+        <div class="sub-nav">
+            <button class="sub-tab-btn active" onclick="showSubTab('sortear', event)">🎲 SORTEAR</button>
+            <button class="sub-tab-btn" onclick="showSubTab('add-jugador', event)">👥 Gestión Jugadores</button>
+            <button class="sub-tab-btn" onclick="showSubTab('admin', event)">⚙️ Cargar Partido</button>
+            <button class="sub-tab-btn" onclick="showSubTab('edit-contabilidad', event)">💶 Contabilidad</button>
+            <button class="sub-tab-btn" onclick="showSubTab('backup', event)">💾 Copia de Seguridad</button>
+        </div>
+
+        <div id="sortear" class="sub-tab-content active">
+            <div class="card">
+                <h2>🎲 Generador Balanceado de Equipos</h2>
+                <p style="color: var(--text-dim);">Selecciona los 10 jugadores convocados y el criterio para nivelar el partido:</p>
+
+                <label><b>Criterio de Sorteo:</b></label>
+                <select id="sorteo-criterio">
+                    <option value="winrate">Equilibrar por % Victorias (Win Rate)</option>
+                    <option value="puntos">Equilibrar por Puntos en Clasificación</option>
+                    <option value="goles">Equilibrar por Potencial Goleador (Pichichi)</option>
+                    <option value="aleatorio">100% Aleatorio (Azar)</option>
+                </select>
+
+                <h3 style="margin-top: 20px;">Jugadores Convocados (10):</h3>
+                <div id="sorteo-selects-container" class="sorteo-grid"></div>
+
+                <button class="tab-btn" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-top: 10px;" onclick="ejecutarSorteo()">⚡ Hacer Equipos Balanceados</button>
+
+                <div id="resultado-sorteo" style="margin-top: 25px;"></div>
+            </div>
+        </div>
+
+        <div id="add-jugador" class="sub-tab-content">
+            <div class="card">
+                <h2>👥 Gestión de la Plantilla</h2>
+                <div style="margin-bottom: 20px;">
+                    <label><b>Añadir Nuevo Jugador:</b></label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="nuevo-jugador-nombre" placeholder="Ej. LUIS" style="margin-bottom:0;">
+                        <button class="tab-btn" onclick="agregarJugador()" style="white-space: nowrap;">Añadir</button>
+                    </div>
+                </div>
+                <h3>Lista Actual de Jugadores:</h3>
+                <div id="lista-gestion-jugadores"></div>
+            </div>
+        </div>
+
+        <div id="admin" class="sub-tab-content">
+            <div class="card">
+                <h2>⚙️ Generador de Resultados (Acceso Administrador)</h2>
+                <div>
+                    <label><b>Jornada Nº:</b></label>
+                    <input type="number" id="adm-jornada" value="1" min="1" max="34">
+                </div>
+
+                <div class="form-grid" style="margin-top: 15px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px;">
+                        <h3 style="margin-top:0; color:var(--accent);">Equipo Blanco</h3>
+                        <div id="inputs-blanco"></div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                        <h3 style="margin-top:0; color:var(--accent);">Equipo Negro</h3>
+                        <div id="inputs-negro"></div>
+                    </div>
+                </div>
+
+                <button class="tab-btn" style="margin-top: 15px;" onclick="generarJSON()">Generar Código de Jornada</button>
+                
+                <div style="margin-top: 15px;">
+                    <label><b>Copia esto dentro de `resultadosDetalle` en el código:</b></label>
+                    <textarea id="adm-output" rows="4" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="edit-contabilidad" class="sub-tab-content">
+            <div class="card">
+                <h2>💶 Gestión Manual de Contabilidad</h2>
+                <p style="color: var(--text-dim);">Añade ingresos o gastos extraordinarios asociados a una jornada específica.</p>
+                
+                <div style="margin-top: 15px;">
+                    <label><b>Seleccionar Jornada:</b></label>
+                    <select id="conta-manual-jornada"></select>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <label><b>Cantidad (€) <span style="font-size:0.8rem; color:var(--text-dim);">(Usa números positivos para sumar o negativos ej. -10 para restar gastos):</span></b></label>
+                    <input type="number" id="conta-manual-cantidad" step="0.01" placeholder="Ej. 15 o -10">
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <label><b>Concepto / Motivo:</b></label>
+                    <input type="text" id="conta-manual-concepto" placeholder="Ej. Compra de botes de pelotas, pago de campo, etc.">
+                </div>
+
+                <button class="tab-btn" style="margin-top: 10px; width:100%;" onclick="agregarMovimientoContabilidad()">➕ Añadir Movimiento al Bote</button>
+
+                <h3 style="margin-top: 30px;">Movimientos Manuales Registrados:</h3>
+                <div id="lista-movimientos-manuales"></div>
+            </div>
+        </div>
+
+        <div id="backup" class="sub-tab-content">
+            <div class="card">
+                <h2>💾 Copia de Seguridad y Restauración (JSON)</h2>
+                <p style="color: var(--text-dim);">Exporta o importa todos los resultados, jugadores y movimientos de caja para guardarlos de forma segura en tu dispositivo.</p>
+                
+                <div style="margin: 20px 0;">
+                    <button class="tab-btn" onclick="exportarBackupJSON()">📥 Descargar Copia de Seguridad (.json)</button>
+                </div>
+
+                <div style="margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 15px;">
+                    <label><b>Restaurar desde archivo JSON:</b></label>
+                    <input type="file" id="import-file" accept=".json" onchange="importarBackupJSON(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const miembrosOriginales = ["ALEX", "IVÁN", "JORGE", "JOSE", "JOSE CARLOS", "JUANI", "KMAO", "PABLO", "ROBERTO", "RUBÉN"];
+        let jugadores = [...miembrosOriginales];
+        const CLAVE_ADMIN = "5121MTP";
+        let adminAutenticado = false;
+        
+        const calendarioBase = [
+            { j: 1, fecha: "2 de septiembre de 2026" }, { j: 2, fecha: "9 de septiembre de 2026" }, { j: 3, fecha: "16 de septiembre de 2026" }, { j: 4, fecha: "23 de septiembre de 2026" }, { j: 5, fecha: "30 de septiembre de 2026" },
+            { j: 6, fecha: "7 de octubre de 2026" }, { j: 7, fecha: "14 de octubre de 2026" }, { j: 8, fecha: "21 de octubre de 2026" }, { j: 9, fecha: "28 de octubre de 2026" },
+            { j: 10, fecha: "4 de noviembre de 2026" }, { j: 11, fecha: "11 de noviembre de 2026" }, { j: 12, fecha: "18 de noviembre de 2026" }, { j: 13, fecha: "25 de noviembre de 2026" },
+            { j: 14, fecha: "2 de diciembre de 2026" }, { j: 15, fecha: "9 de diciembre de 2026" }, { j: 16, fecha: "16 de diciembre de 2026" },
+            { j: 17, fecha: "13 de enero de 2027" }, { j: 18, fecha: "20 de enero de 2027" }, { j: 19, fecha: "27 de enero de 2027" },
+            { j: 20, fecha: "3 de febrero de 2027" }, { j: 21, fecha: "10 de febrero de 2027" }, { j: 22, fecha: "17 de febrero de 2027" }, { j: 23, fecha: "24 de febrero de 2027" },
+            { j: 24, fecha: "3 de marzo de 2027" }, { j: 25, fecha: "10 de marzo de 2027" }, { j: 26, fecha: "17 de marzo de 2027" }, { j: 27, fecha: "31 de marzo de 2027" },
+            { j: 28, fecha: "7 de abril de 2027" }, { j: 29, fecha: "14 de abril de 2027" }, { j: 30, fecha: "21 de abril de 2027" }, { j: 31, fecha: "28 de abril de 2027" },
+            { j: 32, fecha: "5 de mayo de 2027" }, { j: 33, fecha: "12 de mayo de 2027" }, { j: 34, fecha: "19 de mayo de 2027" }
+        ];
+
+        let resultadosDetalle = {};
+        let movimientosContabilidad = []; // Almacena registros manuales de contabilidad
+
+        function limpiarNombre(nombre) {
+            return nombre.replace(" 💶", "").replace(" (PP)", "").trim();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        function showTab(tabId, e) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('nav .tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (e && e.target) e.target.classList.add('active');
+        }
+
+        function showSubTab(subTabId, e) {
+            document.querySelectorAll('.sub-tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(subTabId).classList.add('active');
+            if (e && e.target) e.target.classList.add('active');
+        }
+
+        function accederPrivado(e) {
+            if (adminAutenticado) { 
+                showTab('privado', e); 
+                return; 
+            }
+            const inputClave = prompt("🔑 Introduce la contraseña privada:");
+            if (inputClave === CLAVE_ADMIN) {
+                adminAutenticado = true;
+                alert("✅ Acceso concedido.");
+                showTab('privado', e);
+            } else if (inputClave !== null) {
+                alert("❌ Contraseña incorrecta.");
+            }
+        }
+
+        function agregarJugador() {
+            const input = document.getElementById('nuevo-jugador-nombre');
+            const nombre = input.value.trim().toUpperCase();
+            if (!nombre) return alert("Introduce un nombre válido.");
+            if (jugadores.includes(nombre)) return alert("El jugador ya existe.");
+
+            jugadores.push(nombre);
+            jugadores.sort();
+            input.value = "";
+            actualizarTodo();
+        }
+
+        function editarJugador(nombreActual) {
+            const nuevoNombre = prompt(`Modificar nombre para "${nombreActual}":`, nombreActual);
+            if (!nuevoNombre) return;
+            const limpio = nuevoNombre.trim().toUpperCase();
+            if (!limpio) return alert("Nombre no válido.");
+            if (jugadores.includes(limpio)) return alert("Ya existe un jugador con ese nombre.");
+
+            jugadores = jugadores.map(j => j === nombreActual ? limpio : j);
+            jugadores.sort();
+
+            Object.keys(resultadosDetalle).forEach(jNum => {
+                let match = resultadosDetalle[jNum];
+                match.blanco = match.blanco.map(j => {
+                    let suffix = j.includes(" 💶") ? " 💶" : "";
+                    return limpiarNombre(j) === nombreActual ? limpio + suffix : j;
+                });
+                match.negro = match.negro.map(j => {
+                    let suffix = j.includes(" 💶") ? " 💶" : "";
+                    return limpiarNombre(j) === nombreActual ? limpio + suffix : j;
+                });
+                if (match.golesBlanco) {
+                    match.golesBlanco = match.golesBlanco.split(', ').map(item => {
+                        return item.replace(new RegExp(`\\b${nombreActual}\\b`, 'g'), limpio);
+                    }).join(', ');
+                }
+                if (match.golesNegro) {
+                    match.golesNegro = match.golesNegro.split(', ').map(item => {
+                        return item.replace(new RegExp(`\\b${nombreActual}\\b`, 'g'), limpio);
+                    }).join(', ');
+                }
+                if (match.sustituto) {
+                    match.sustituto = match.sustituto.split(', ').map(item => {
+                        return item.replace(new RegExp(`\\b${nombreActual}\\b`, 'g'), limpio);
+                    }).join(', ');
+                }
+            });
+
+            actualizarTodo();
+            alert(`✅ Jugador actualizado a "${limpio}".`);
+        }
+
+        function eliminarJugador(nombre) {
+            if (confirm(`¿Seguro que deseas eliminar a ${nombre}?`)) {
+                jugadores = jugadores.filter(j => j !== nombre);
+                actualizarTodo();
+            }
+        }
+
+        function agregarMovimientoContabilidad() {
+            const jornada = parseInt(document.getElementById('conta-manual-jornada').value);
+            const cantidad = parseFloat(document.getElementById('conta-manual-cantidad').value);
+            const concepto = document.getElementById('conta-manual-concepto').value.trim();
+
+            if (isNaN(cantidad)) return alert("⚠️ Introduce una cantidad válida en dinero.");
+            if (!concepto) return alert("⚠️ Introduce un concepto válido.");
+
+            movimientosContabilidad.push({ jornada, cantidad, concepto });
+            document.getElementById('conta-manual-cantidad').value = "";
+            document.getElementById('conta-manual-concepto').value = "";
+            actualizarTodo();
+            alert("✅ Movimiento de contabilidad guardado correctamente.");
+        }
+
+        function eliminarMovimientoContabilidad(index) {
+            if (confirm("¿Seguro que deseas eliminar este movimiento?")) {
+                movimientosContabilidad.splice(index, 1);
+                actualizarTodo();
+            }
+        }
+
+        function procesarEstadisticas() {
+            let stats = {};
+            jugadores.forEach(j => {
+                stats[j] = { pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0, goles: 0, autogoles: 0, historial: [] };
+            });
+
+            let boteTotal = 0;
+            let historialBote = [];
+
+            // Procesar aportaciones por suplentes en partidos
+            Object.keys(resultadosDetalle).forEach(jNum => {
+                const match = resultadosDetalle[jNum];
+                const [gBlanco, gNegro] = match.res.split(' - ').map(Number);
+
+                const plantillaB = match.blanco.map(limpiarNombre);
+                const plantillaN = match.negro.map(limpiarNombre);
+
+                [...plantillaB, ...plantillaN].forEach(j => {
+                    if (!stats[j]) {
+                        if (!jugadores.includes(j)) jugadores.push(j);
+                        stats[j] = { pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0, goles: 0, autogoles: 0, historial: [] };
+                    }
+                });
+
+                if (match.sustituto) {
+                    const aportes = match.sustituto.split(', ');
+                    aportes.forEach(ap => {
+                        boteTotal += 3;
+                        historialBote.push({ texto: `Jornada ${jNum}: ${ap}`, monto: 3 });
+                    });
+                }
+
+                let golesPorJugadorJornada = {};
+                if (match.golesBlanco && match.golesBlanco !== "Sin goles") {
+                    match.golesBlanco.split(', ').forEach(itemStr => {
+                        const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                        const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                        if (mPP) {
+                            const clean = limpiarNameLocal(mPP[1]);
+                            const cnt = mPP[2] ? parseInt(mPP[2]) : 1;
+                            if (stats[clean]) stats[clean].autogoles += cnt;
+                        } else if (mNorm && !itemStr.includes("(PP)")) {
+                            const clean = limpiarNameLocal(mNorm[1]);
+                            const cnt = parseInt(mNorm[2]);
+                            if (stats[clean]) stats[clean].goles += cnt;
+                            golesPorJugadorJornada[clean] = (golesPorJugadorJornada[clean] || 0) + cnt;
+                        }
+                    });
+                }
+
+                if (match.golesNegro && match.golesNegro !== "Sin goles") {
+                    match.golesNegro.split(', ').forEach(itemStr => {
+                        const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                        const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                        if (mPP) {
+                            const clean = limpiarNameLocal(mPP[1]);
+                            const cnt = mPP[2] ? parseInt(mPP[2]) : 1;
+                            if (stats[clean]) stats[clean].autogoles += cnt;
+                        } else if (mNorm && !itemStr.includes("(PP)")) {
+                            const clean = limpiarNameLocal(mNorm[1]);
+                            const cnt = parseInt(mNorm[2]);
+                            if (stats[clean]) stats[clean].goles += cnt;
+                            golesPorJugadorJornada[clean] = (golesPorJugadorJornada[clean] || 0) + cnt;
+                        }
+                    });
+                }
+
+                plantillaB.forEach(j => {
+                    let st = stats[j];
+                    st.pj++; st.gf += gBlanco; st.gc += gNegro;
+                    let anotó = (golesPorJugadorJornada[j] || 0) > 0 ? 1 : 0;
+                    if (gBlanco > gNegro) { st.pg++; st.pts += 3; st.historial.push({ res: 'G', anotó, jNum }); }
+                    else if (gBlanco === gNegro) { st.pe++; st.pts += 1; st.historial.push({ res: 'E', anotó, jNum }); }
+                    else { st.pp++; st.historial.push({ res: 'P', anotó, jNum }); }
+                });
+
+                plantillaN.forEach(j => {
+                    let st = stats[j];
+                    st.pj++; st.gf += gNegro; st.gc += gBlanco;
+                    let anotó = (golesPorJugadorJornada[j] || 0) > 0 ? 1 : 0;
+                    if (gNegro > gBlanco) { st.pg++; st.pts += 3; st.historial.push({ res: 'G', anotó, jNum }); }
+                    else if (gNegro === gBlanco) { st.pe++; st.pts += 1; st.historial.push({ res: 'E', anotó, jNum }); }
+                    else { st.pp++; st.historial.push({ res: 'P', anotó, jNum }); }
+                });
+            });
+
+            // Procesar movimientos manuales de contabilidad
+            movimientosContabilidad.forEach(mov => {
+                boteTotal += mov.cantidad;
+                let signoStr = mov.cantidad >= 0 ? `+${mov.cantidad.toFixed(2)} €` : `${mov.cantidad.toFixed(2)} €`;
+                historialBote.push({ texto: `Jornada ${mov.jornada}: ${mov.concepto} (${signoStr})`, monto: mov.cantidad });
+            });
+
+            return { stats, boteTotal, historialBote };
+        }
+
+        function limpiarNameLocal(str) {
+            return str.replace(" 💶", "").replace(" (PP)", "").trim();
+        }
+
+        function renderClasificacion() {
+            const { stats } = procesarEstadisticas();
+            const tbody = document.getElementById('tabla-clasificacion');
+            tbody.innerHTML = "";
+            
+            const criterio = document.getElementById('sort-clasificacion-criterio').value;
+            const orden = document.getElementById('sort-clasificacion-orden').value;
+
+            let array = Object.keys(stats).map(j => ({ 
+                nombre: j, 
+                winrate: stats[j].pj > 0 ? (stats[j].pg / stats[j].pj) * 100 : 0,
+                dg: stats[j].gf - stats[j].gc,
+                ...stats[j] 
+            }));
+
+            array.sort((a, b) => {
+                let valA = a[criterio];
+                let valB = b[criterio];
+
+                if (criterio === 'nombre') {
+                    if (orden === 'asc') return valA.localeCompare(valB);
+                    return valB.localeCompare(valA);
+                }
+
+                if (valA !== valB) {
+                    return orden === 'asc' ? valA - valB : valB - valA;
+                }
+                return b.pts - a.pts;
+            });
+
+            array.forEach((j, index) => {
+                const winRate = j.pj > 0 ? Math.round((j.pg / j.pj) * 100) : 0;
+                const badgeSustituto = !miembrosOriginales.includes(j.nombre) ? `<span class="sustituto-badge">SUPLENTE</span>` : "";
+                
+                const ultimos5 = j.historial.slice(-5);
+                let pills = ultimos5.map(h => `<span class="racha-pill racha-${h.res}">${h.res}</span>`).join('');
+                if (!pills) pills = "-";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><b>${j.nombre}</b> ${badgeSustituto}</td>
+                        <td>${pills}</td>
+                        <td>${j.pj}</td><td>${j.pg}</td><td>${j.pe}</td><td>${j.pp}</td>
+                        <td>${j.gf}</td><td>${j.gc}</td>
+                        <td>${winRate}%</td>
+                        <td><b>${j.pts}</b></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderPichichi() {
+            const { stats } = procesarEstadisticas();
+            const tbody = document.getElementById('tabla-pichichi');
+            tbody.innerHTML = "";
+
+            const criterio = document.getElementById('sort-pichichi-criterio').value;
+            const orden = document.getElementById('sort-pichichi-orden').value;
+
+            let array = Object.keys(stats).map(j => {
+                const pj = stats[j].pj;
+                const goles = stats[j].goles;
+                const promedio = pj > 0 ? parseFloat((goles / pj).toFixed(2)) : 0.00;
+                return { nombre: j, goles: goles, promedio: promedio, pj: pj };
+            });
+
+            array.sort((a, b) => {
+                let valA = a[criterio];
+                let valB = b[criterio];
+
+                if (criterio === 'nombre') {
+                    if (orden === 'asc') return valA.localeCompare(valB);
+                    return valB.localeCompare(valA);
+                }
+
+                if (valA !== valB) {
+                    return orden === 'asc' ? valA - valB : valB - valA;
+                }
+                return b.goles - a.goles;
+            });
+
+            array.forEach((j, index) => {
+                const badge = !miembrosOriginales.includes(j.nombre) ? `<span class="sustituto-badge">SUPLENTE</span>` : "";
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${j.nombre} ${badge}</td>
+                        <td><b>${j.goles} Goles</b></td>
+                        <td>${j.promedio.toFixed(2)} <span style="font-size:0.8rem; color:var(--text-dim);">(${j.pj} PJ)</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderRachas() {
+            const { stats }  = procesarEstadisticas();
+            const container = document.getElementById('rachas-container');
+            container.innerHTML = "";
+
+            let dataJugadores = [];
+
+            Object.keys(stats).forEach(jName => {
+                const h = stats[jName].historial;
+
+                let actG = 0, maxG = 0, tempG = 0;
+                let actSG = 0, maxSG = 0, tempSG = 0;
+                let actP = 0, maxP = 0, tempP = 0;
+                let actSP = 0, maxSP = 0, tempSP = 0;
+                let actA = 0, maxA = 0, tempA = 0;
+                let actSA = 0, maxSA = 0, tempSA = 0;
+
+                h.forEach((item, index) => {
+                    if (item.res === 'G') {
+                        tempG++;
+                        if (index === h.length - 1) actG = tempG;
+                    } else {
+                        if (index === h.length - 1) actG = 0;
+                        tempG = 0;
+                    }
+                    if (tempG > maxG) maxG = tempG;
+
+                    if (item.res === 'E' || item.res === 'P') {
+                        tempSG++;
+                        if (index === h.length - 1) actSG = tempSG;
+                    } else {
+                        if (index === h.length - 1) actSG = 0;
+                        tempSG = 0;
+                    }
+                    if (tempSG > maxSG) maxSG = tempSG;
+
+                    if (item.res === 'P') {
+                        tempP++;
+                        if (index === h.length - 1) actP = tempP;
+                    } else {
+                        if (index === h.length - 1) actP = 0;
+                        tempP = 0;
+                    }
+                    if (tempP > maxP) maxP = tempP;
+
+                    if (item.res === 'G' || item.res === 'E') {
+                        tempSP++;
+                        if (index === h.length - 1) actSP = tempSP;
+                    } else {
+                        if (index === h.length - 1) actSP = 0;
+                        tempSP = 0;
+                    }
+                    if (tempSP > maxSP) maxSP = tempSP;
+
+                    if (item.anotó === 1) {
+                        tempA++;
+                        if (index === h.length - 1) actA = tempA;
+                    } else {
+                        if (index === h.length - 1) actA = 0;
+                        tempA = 0;
+                    }
+                    if (tempA > maxA) maxA = tempA;
+
+                    if (item.anotó === 0) {
+                        tempSA++;
+                        if (index === h.length - 1) actSA = tempSA;
+                    } else {
+                        if (index === h.length - 1) actSA = 0;
+                        tempSA = 0;
+                    }
+                    if (tempSA > maxSA) maxSA = tempSA;
+                });
+
+                dataJugadores.push({
+                    nombre: jName,
+                    actG, maxG,
+                    actSG, maxSG,
+                    actP, maxP,
+                    actSP, maxSP,
+                    actA, maxA,
+                    actSA, maxSA,
+                    pj: stats[jName].pj
+                });
+            });
+
+            function obtenerRankingMultiples(metrica, esMaximo = false) {
+                let keyAct = esMaximo ? `max${metrica}` : `act${metrica}`;
+                let maxVal = -1;
+                dataJugadores.forEach(j => {
+                    if (j.pj > 0 && j[keyAct] > maxVal) maxVal = j[keyAct];
+                });
+                if (maxVal <= 0) return { val: 0, lista: [] };
+                let filtrados = dataJugadores.filter(j => j[keyAct] === maxVal && j.pj > 0).map(j => j.nombre);
+                return { val: maxVal, lista: filtrados };
+            }
+
+            const rVicAct = obtenerRankingMultiples('G', false);
+            const rVicMax = obtenerRankingMultiples('G', true);
+            const rSinGanarAct = obtenerRankingMultiples('SG', false);
+            const rSinGanarMax = obtenerRankingMultiples('SG', true);
+            const rDerAct = obtenerRankingMultiples('P', false);
+            const rDerMax = obtenerRankingMultiples('P', true);
+            const rSinPerderAct = obtenerRankingMultiples('SP', false);
+            const rSinPerderMax = obtenerRankingMultiples('SP', true);
+            const rAnotandoAct = obtenerRankingMultiples('A', false);
+            const rAnotandoMax = obtenerRankingMultiples('A', true);
+            const rSinAnotarAct = obtenerRankingMultiples('SA', false);
+            const rSinAnotarMax = obtenerRankingMultiples('SA', true);
+
+            const paresCategorias = [
+                {
+                    actual: { title: "🔥 Partidos Ganados Seguidos (Actual)", data: rVicAct, unit: "partidos" },
+                    historico: { title: "🏆 Récord: Partidos Ganados Seguidos", data: rVicMax, unit: "partidos" }
+                },
+                {
+                    actual: { title: "🛡️ Partidos Sin Perder Seguidos (Actual)", data: rSinPerderAct, unit: "partidos" },
+                    historico: { title: "🌟 Récord: Partidos Sin Perder Seguidos", data: rSinPerderMax, unit: "partidos" }
+                },
+                {
+                    actual: { title: "🎯 Partidos Anotando Seguidos (Actual)", data: rAnotandoAct, unit: "partidos" },
+                    historico: { title: "🚀 Récord: Partidos Anotando Seguidos", data: rAnotandoMax, unit: "partidos" }
+                },
+                {
+                    actual: { title: "⚠️ Partidos Sin Ganar Seguidos (Actual)", data: rSinGanarAct, unit: "partidos" },
+                    historico: { title: "📊 Récord: Partidos Sin Ganar Seguidos", data: rSinGanarMax, unit: "partidos" }
+                },
+                {
+                    actual: { title: "❌ Partidos Perdidos Seguidos (Actual)", data: rDerAct, unit: "partidos" },
+                    historico: { title: "📉 Récord: Partidos Perdidos Seguidos", data: rDerMax, unit: "partidos" }
+                },
+                {
+                    actual: { title: "🧊 Partidos Sin Anotar Seguidos (Actual)", data: rSinAnotarAct, unit: "partidos" },
+                    historico: { title: "❄️ Récord: Partidos Sin Anotar Seguidos", data: rSinAnotarMax, unit: "partidos" }
+                }
+            ];
+
+            function generarHtmlCaja(card) {
+                let filasHtml = "";
+                if (card.data.val === 0 || card.data.lista.length === 0) {
+                    filasHtml = `<div class="racha-item-row"><span style="color:var(--text-dim); font-style:italic;">Sin registros activos</span><span>0</span></div>`;
+                } else {
+                    card.data.lista.forEach(jug => {
+                        const badge = !miembrosOriginales.includes(jug) ? ` <span class="sustituto-badge" style="font-size:0.6rem;">SUP</span>` : "";
+                        filasHtml += `
+                            <div class="racha-item-row">
+                                <span><b>${jug}</b>${badge}</span>
+                                <span class="goal-count" style="font-size:0.9rem;">${card.data.val} ${card.unit}</span>
+                            </div>
+                        `;
+                    });
+                }
+                return `
+                    <div class="racha-box">
+                        <h4><span>${card.title}</span></h4>
+                        <div style="margin-top: 10px;">
+                            ${filasHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            paresCategorias.forEach(par => {
+                container.innerHTML += `
+                    <div class="racha-row-container">
+                        ${generarHtmlCaja(par.actual)}
+                        ${generarHtmlCaja(par.historico)}
+                    </div>
+                `;
+            });
+        }
+
+        function renderSorteoSelects() {
+            const container = document.getElementById('sorteo-selects-container');
+            container.innerHTML = "";
+
+            for (let i = 0; i < 10; i++) {
+                let options = `<option value="" disabled selected>-- Selecciona jugador --</option>` + jugadores.map(j => {
+                    const badge = !miembrosOriginales.includes(j) ? " (Suplente)" : "";
+                    return `<option value="${j}">${j}${badge}</option>`;
+                }).join('');
+
+                container.innerHTML += `
+                    <div>
+                        <label><b>Jugador ${i + 1}:</b></label>
+                        <select id="sorteo-j${i}" onchange="actualizarOpcionesSorteo()">${options}</select>
+                    </div>
+                `;
+            }
+        }
+
+        function actualizarOpcionesSorteo() {
+            let seleccionados = [];
+            for (let i = 0; i < 10; i++) {
+                const val = document.getElementById(`sorteo-j${i}`).value;
+                if (val) seleccionados.push(val);
+            }
+
+            for (let i = 0; i < 10; i++) {
+                const select = document.getElementById(`sorteo-j${i}`);
+                const actualVal = select.value;
+
+                let optionsHtml = `<option value="" disabled ${!actualVal ? 'selected' : ''}>-- Selecciona jugador --</option>`;
+                jugadores.forEach(j => {
+                    const badge = !miembrosOriginales.includes(j) ? " (Suplente)" : "";
+                    const isSelected = (j === actualVal);
+                    const isDisabled = (seleccionados.includes(j) && !isSelected);
+                    if (!isDisabled) {
+                        optionsHtml += `<option value="${j}" ${isSelected ? 'selected' : ''}>${j}${badge}</option>`;
+                    }
+                });
+                select.innerHTML = optionsHtml;
+            }
+        }
+
+        function ejecutarSorteo() {
+            let elegidos = [];
+            for (let i = 0; i < 10; i++) {
+                const val = document.getElementById(`sorteo-j${i}`).value;
+                if (val) elegidos.push(val);
+            }
+
+            if (elegidos.length < 10) {
+                alert("⚠️ Debes seleccionar los 10 jugadores convocados.");
+                return;
+            }
+
+            const criterio = document.getElementById('sorteo-criterio').value;
+            const { stats } = procesarEstadisticas();
+
+            let listaConValor = elegidos.map(j => {
+                let val = 0;
+                const st = stats[j] || { pj: 0, pg: 0, pts: 0, goles: 0 };
+                if (criterio === 'winrate') val = st.pj > 0 ? (st.pg / st.pj) * 100 : 0;
+                else if (criterio === 'puntos') val = st.pts;
+                else if (criterio === 'goles') val = st.goles;
+                else val = Math.random();
+                return { nombre: j, valor: val };
+            });
+
+            if (criterio === 'aleatorio') {
+                listaConValor.sort(() => Math.random() - 0.5);
+            } else {
+                listaConValor.sort((a, b) => b.valor - a.valor);
+            }
+
+            let blanco = [];
+            let negro = [];
+            let valB = 0, valN = 0;
+
+            listaConValor.forEach(item => {
+                if (blanco.length < 5 && (negro.length === 5 || valB <= valN)) {
+                    blanco.push(item);
+                    valB += item.valor;
+                } else {
+                    negro.push(item);
+                    valN += item.valor;
+                }
+            });
+
+            const formatNombre = j => !miembrosOriginales.includes(j) ? `${j} <span class="sustituto-badge">SUPLENTE</span>` : j;
+
+            let extraInfo = "";
+            if (criterio === 'winrate') {
+                const avgB = (valB / 5).toFixed(1);
+                const avgN = (valN / 5).toFixed(1);
+                extraInfo = `<p style="font-size:0.9rem; color:var(--text-dim);">Win Rate Promedio: Blanco <b>${avgB}%</b> vs Negro <b>${avgN}%</b></p>`;
+            } else if (criterio === 'puntos') {
+                extraInfo = `<p style="font-size:0.9rem; color:var(--text-dim);">Puntos Totales: Blanco <b>${valB} pts</b> vs Negro <b>${valN} pts</b></p>`;
+            } else if (criterio === 'goles') {
+                extraInfo = `<p style="font-size:0.9rem; color:var(--text-dim);">Goles Acumulados: Blanco <b>${valB} goles</b> vs Negro <b>${valN} goles</b></p>`;
+            }
+
+            document.getElementById('resultado-sorteo').innerHTML = `
+                <h3>⚔️ Equipos Generados:</h3>
+                ${extraInfo}
+                <div class="form-grid">
+                    <div class="equipo-res-box" style="background: rgba(255,255,255,0.05);">
+                        <h4 style="color: var(--accent); margin-top:0;">Equipo Blanco</h4>
+                        <ul style="padding-left: 20px; margin-bottom:0;">
+                            ${blanco.map(j => `<li><b>${formatNombre(j.nombre)}</b></li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="equipo-res-box" style="background: rgba(0,0,0,0.2);">
+                        <h4 style="color: var(--accent); margin-top:0;">Equipo Negro</h4>
+                        <ul style="padding-left: 20px; margin-bottom:0;">
+                            ${negro.map(j => `<li><b>${formatNombre(j.nombre)}</b></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderContabilidad(boteTotal, historialBote) {
+            document.getElementById('bote-total').innerText = `${boteTotal.toFixed(2)} €`;
+            const ul = document.getElementById('lista-bote');
+            ul.innerHTML = historialBote.length > 0 ? historialBote.map(h => {
+                let colorStyle = h.monto < 0 ? 'color: var(--red);' : 'color: var(--green);';
+                return `<li style="${colorStyle}">${h.texto}</li>`;
+            }).join('') : "<li>Sin registros todavía.</li>";
+
+            // Renderizar selector de jornadas para contabilidad manual
+            const selJornada = document.getElementById('conta-manual-jornada');
+            selJornada.innerHTML = calendarioBase.map(c => `<option value="${c.j}">Jornada ${c.j} (${c.fecha})</option>`).join('');
+
+            // Renderizar lista de movimientos manuales para borrar si se desea
+            const divManuales = document.getElementById('lista-movimientos-manuales');
+            divManuales.innerHTML = movimientosContabilidad.length > 0 ? movimientosContabilidad.map((m, idx) => {
+                let colorText = m.cantidad >= 0 ? 'color: var(--green);' : 'color: var(--red);';
+                return `
+                    <div class="player-list-item">
+                        <span>Jornada ${m.jornada}: <b>${m.concepto}</b> <span style="${colorText} font-weight:bold;">(${m.cantidad >= 0 ? '+' : ''}${m.cantidad.toFixed(2)} €)</span></span>
+                        <button class="action-btn delete-btn" onclick="eliminarMovimientoContabilidad(${idx})">Eliminar</button>
+                    </div>
+                `;
+            }).join('') : `<p style="color:var(--text-dim); font-style:italic;">No hay movimientos manuales añadidos.</p>`;
+        }
+
+        function renderGestionJugadores() {
+            const container = document.getElementById('lista-gestion-jugadores');
+            container.innerHTML = "";
+            jugadores.forEach(j => {
+                const esOriginal = miembrosOriginales.includes(j);
+                container.innerHTML += `
+                    <div class="player-list-item">
+                        <span><b>${j}</b> ${esOriginal ? '🛡️ (Miembro)' : '<span class="sustituto-badge">SUPLENTE</span>'}</span>
+                        <div>
+                            <button class="action-btn edit-btn" onclick="editarJugador('${j}')">Editar</button>
+                            ${!esOriginal ? `<button class="action-btn delete-btn" onclick="eliminarJugador('${j}')">Eliminar</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminForms() {
+            const containerBlanco = document.getElementById('inputs-blanco');
+            const containerNegro = document.getElementById('inputs-negro');
+
+            containerBlanco.innerHTML = `
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 0.8fr; gap: 5px; font-weight: bold; font-size: 0.85rem; color: var(--accent); margin-bottom: 5px; text-align: center;">
+                    <span>Jugador</span><span>Goles</span><span>Autogoles</span><span>Bote</span>
+                </div>
+            `;
+            containerNegro.innerHTML = `
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 0.8fr; gap: 5px; font-weight: bold; font-size: 0.85rem; color: var(--accent); margin-bottom: 5px; text-align: center;">
+                    <span>Jugador</span><span>Goles</span><span>Autogoles</span><span>Bote</span>
+                </div>
+            `;
+
+            for (let i = 0; i < 5; i++) {
+                let optionsBlanco = jugadores.map((j, idx) => {
+                    const badge = !miembrosOriginales.includes(j) ? " (Suplente)" : "";
+                    return `<option value="${j}" ${idx === i ? 'selected' : ''}>${j}${badge}</option>`;
+                }).join('');
+
+                containerBlanco.innerHTML += `
+                    <div class="player-score-row">
+                        <select id="adm-b-j${i}">${optionsBlanco}</select>
+                        <input type="number" id="adm-b-g${i}" value="0" min="0" placeholder="Goles">
+                        <input type="number" id="adm-b-pp${i}" value="0" min="0" placeholder="PP">
+                        <label class="checkbox-bote">
+                            <input type="checkbox" id="adm-b-bote${i}"> +3€
+                        </label>
+                    </div>
+                `;
+
+                let optionsNegro = jugadores.map((j, idx) => {
+                    const badge = !miembrosOriginales.includes(j) ? " (Suplente)" : "";
+                    return `<option value="${j}" ${idx === (i + 5) % jugadores.length ? 'selected' : ''}>${j}${badge}</option>`;
+                }).join('');
+
+                containerNegro.innerHTML += `
+                    <div class="player-score-row">
+                        <select id="adm-n-j${i}">${optionsNegro}</select>
+                        <input type="number" id="adm-n-g${i}" value="0" min="0" placeholder="Goles">
+                        <input type="number" id="adm-n-pp${i}" value="0" min="0" placeholder="PP">
+                        <label class="checkbox-bote">
+                            <input type="checkbox" id="adm-n-bote${i}"> +3€
+                        </label>
+                    </div>
+                `;
+            }
+        }
+
+        function generarJSON() {
+            const j = document.getElementById('adm-jornada').value;
+
+            let blanco = [];
+            let golesBlancoList = [];
+            let golesACumularEnBlanco = 0;
+            let golesACumularEnNegro = 0;
+
+            let negro = [];
+            let golesNegroList = [];
+            let aportacionesBote = [];
+
+            for (let i = 0; i < 5; i++) {
+                const jB = document.getElementById(`adm-b-j${i}`).value;
+                const gB = parseInt(document.getElementById(`adm-b-g${i}`).value) || 0;
+                const ppB = parseInt(document.getElementById(`adm-b-pp${i}`).value) || 0;
+                const boteB = document.getElementById(`adm-b-bote${i}`).checked;
+                
+                const nombreB = !miembrosOriginales.includes(jB) ? `${jB} 💶` : jB;
+                blanco.push(nombreB);
+
+                golesACumularEnBlanco += gB;
+                golesACumularEnNegro += ppB;
+
+                if (gB > 0) golesBlancoList.push(`${nombreB} (${gB})`);
+                if (ppB > 0) golesBlancoList.push(`${nombreB} (PP) (${ppB})`);
+                if (boteB) aportacionesBote.push(`${jB} (3 €)`);
+
+                const jN = document.getElementById(`adm-n-j${i}`).value;
+                const gN = parseInt(document.getElementById(`adm-n-g${i}`).value) || 0;
+                const ppN = parseInt(document.getElementById(`adm-n-pp${i}`).value) || 0;
+                const boteN = document.getElementById(`adm-n-bote${i}`).checked;
+                
+                const nombreN = !miembrosOriginales.includes(jN) ? `${jN} 💶` : jN;
+                negro.push(nombreN);
+
+                golesACumularEnNegro += gN;
+                golesACumularEnBlanco += ppN;
+
+                if (gN > 0) golesNegroList.push(`${nombreN} (${gN})`);
+                if (ppN > 0) golesNegroList.push(`${nombreN} (PP) (${ppN})`);
+                if (boteN) aportacionesBote.push(`${jN} (3 €)`);
+            }
+
+            const resStr = `${golesACumularEnBlanco} - ${golesACumularEnNegro}`;
+            const strGb = golesBlancoList.length > 0 ? golesBlancoList.join(', ') : 'Sin goles';
+            const strGn = golesNegroList.length > 0 ? golesNegroList.join(', ') : 'Sin goles';
+            const strSust = aportacionesBote.length > 0 ? aportacionesBote.join(', ') : '';
+
+            const jsonStr = `${j}: { res: "${resStr}", blanco: ${JSON.stringify(blanco)}, negro: ${JSON.stringify(negro)}, golesBlanco: "${strGb}", golesNegro: "${strGn}"${strSust ? `, sustituto: "${strSust}"` : ''} },`;
+            document.getElementById('adm-output').value = jsonStr;
+        }
+
+        function exportarBackupJSON() {
+            const dataBackup = {
+                jugadores: jugadores,
+                resultadosDetalle: resultadosDetalle,
+                movimientosContabilidad: movimientosContabilidad
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataBackup, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "pena_cpm_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importarBackupJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed.jugadores && parsed.resultadosDetalle) {
+                        jugadores = parsed.jugadores;
+                        resultadosDetalle = parsed.resultadosDetalle;
+                        movimientosContabilidad = parsed.movimientosContabilidad || [];
+                        actualizarTodo();
+                        alert("✅ Copia de seguridad importada con éxito.");
+                    } else {
+                        alert("❌ El archivo JSON no tiene la estructura correcta.");
+                    }
+                } catch (err) {
+                    alert("❌ Error al leer el archivo JSON.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function renderCalendario() {
+            const container = document.getElementById('calendar-container');
+            container.innerHTML = "";
+            let proxJornada = null;
+
+            calendarioBase.forEach(item => {
+                const det = resultadosDetalle[item.j];
+                const jugado = !!det;
+
+                if (!jugado && !proxJornada) proxJornada = item;
+
+                let golesBMap = {};
+                let ppBMap = {};
+                let golesNMap = {};
+                let ppNMap = {};
+                let scoreB = "-", scoreN = "-";
+
+                if (jugado) {
+                    const [gb, gn] = det.res.split(' - ').map(s => s.trim());
+                    scoreB = gb;
+                    scoreN = gn;
+
+                    if (det.golesBlanco && det.golesBlanco !== "Sin goles") {
+                        det.golesBlanco.split(', ').forEach(itemStr => {
+                            const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                            const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                            if (mPP) {
+                                const clean = limpiarNameLocal(mPP[1]);
+                                ppBMap[clean] = mPP[2] ? parseInt(mPP[2]) : 1;
+                            } else if (mNorm && !itemStr.includes("(PP)")) {
+                                const clean = limpiarNameLocal(mNorm[1]);
+                                golesBMap[clean] = parseInt(mNorm[2]);
+                            }
+                        });
+                    }
+
+                    if (det.golesNegro && det.golesNegro !== "Sin goles") {
+                        det.golesNegro.split(', ').forEach(itemStr => {
+                            const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                            const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                            if (mPP) {
+                                const clean = limpiarNameLocal(mPP[1]);
+                                ppNMap[clean] = mPP[2] ? parseInt(mPP[2]) : 1;
+                            } else if (mNorm && !itemStr.includes("(PP)")) {
+                                const clean = limpiarNameLocal(mNorm[1]);
+                                golesNMap[clean] = parseInt(mNorm[2]);
+                            }
+                        });
+                    }
+                }
+
+                const listaBlanco = jugado ? det.blanco : jugadores.slice(0, 5);
+                const listaNegro = jugado ? det.negro : jugadores.slice(5, 10);
+
+                let htmlBlanco = listaBlanco.map(jRaw => {
+                    const cleanName = limpiarNameLocal(jRaw);
+                    const isSust = !miembrosOriginales.includes(cleanName);
+                    const badge = isSust ? `<span class="sustituto-badge" style="font-size:0.65rem; padding:1px 4px;">SUP</span>` : "";
+                    
+                    const gf = golesBMap[cleanName] || 0;
+                    const pp = ppBMap[cleanName] || 0;
+
+                    return `
+                        <div class="player-goal-item">
+                            <span>${cleanName} ${badge}</span>
+                            <span>
+                                ${jugado && gf > 0 ? `<span class="goal-count">${gf} G</span>` : ''}
+                                ${jugado && pp > 0 ? `<span class="goal-count own-goal">${pp} PP</span>` : ''}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                let htmlNegro = listaNegro.map(jRaw => {
+                    const cleanName = limpiarNameLocal(jRaw);
+                    const isSust = !miembrosOriginales.includes(cleanName);
+                    const badge = isSust ? `<span class="sustituto-badge" style="font-size:0.65rem; padding:1px 4px;">SUP</span>` : "";
+                    
+                    const gf = golesNMap[cleanName] || 0;
+                    const pp = ppNMap[cleanName] || 0;
+
+                    return `
+                        <div class="player-goal-item">
+                            <span>${cleanName} ${badge}</span>
+                            <span>
+                                ${jugado && gf > 0 ? `<span class="goal-count">${gf} G</span>` : ''}
+                                ${jugado && pp > 0 ? `<span class="goal-count own-goal">${pp} PP</span>` : ''}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+
+                let extraInfoJornada = "";
+                if (jugado && det.sustituto) {
+                    extraInfoJornada = `<div style="font-size: 0.8rem; color: var(--green); margin-top: 8px; text-align: center;">💶 Sustituto(s): ${det.sustituto}</div>`;
+                }
+
+                container.innerHTML += `
+                    <div class="calendar-card">
+                        <div class="calendar-header">
+                            <b>Jornada ${item.j}</b>
+                            <span class="badge-status ${jugado ? 'status-played' : 'status-pending'}">
+                                ${jugado ? 'JUGADO' : 'PENDIENTE'}
+                            </span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px;">📅 ${item.fecha}</div>
+                        <div class="teams-grid">
+                            <div class="team-column">
+                                <div class="team-header">
+                                    <span>BLANCO</span>
+                                    <span>${scoreB}</span>
+                                </div>
+                                ${htmlBlanco}
+                            </div>
+                            <div class="team-column">
+                                <div class="team-header">
+                                    <span>NEGRO</span>
+                                    <span>${scoreN}</span>
+                                </div>
+                                ${htmlNegro}
+                            </div>
+                        </div>
+                        ${extraInfoJornada}
+                    </div>
+                `;
+            });
+
+            document.getElementById('next-jornada-num').innerText = proxJornada ? proxJornada.j : "Finalizada";
+            document.getElementById('next-jornada-fecha').innerText = proxJornada ? proxJornada.fecha : "-";
+        }
+
+        function renderJugadoresSelect() {
+            const selectFicha = document.getElementById('select-jugador');
+            const c1 = document.getElementById('compare-j1');
+            const c2 = document.getElementById('compare-j2');
+            
+            selectFicha.innerHTML = "";
+            c1.innerHTML = "";
+            c2.innerHTML = "";
+
+            jugadores.forEach((j, i) => {
+                const badge = !miembrosOriginales.includes(j) ? " (Suplente)" : "";
+                selectFicha.innerHTML += `<option value="${j}">${j}${badge}</option>`;
+                c1.innerHTML += `<option value="${j}">${j}${badge}</option>`;
+                c2.innerHTML += `<option value="${j}" ${i === 1 ? 'selected' : ''}>${j}${badge}</option>`;
+            });
+
+            cargarFichaJugador();
+            ejecutarComparacion();
+            renderSorteoSelects();
+        }
+
+        function cargarFichaJugador() {
+            const select = document.getElementById('select-jugador');
+            if (!select.value) return;
+            const j = select.value;
+            const { stats } = procesarEstadisticas();
+            const st = stats[j] || { pj: 0, pg: 0, pe: 0, pp: 0, goles: 0, autogoles: 0 };
+            const esOriginal = miembrosOriginales.includes(j);
+            const winRate = st.pj > 0 ? Math.round((st.pg / st.pj) * 100) : 0;
+
+            let filasJornadas = "";
+
+            calendarioBase.forEach(item => {
+                const det = resultadosDetalle[item.j];
+
+                if (!det) {
+                    filasJornadas += `
+                        <tr>
+                            <td><b>J${item.j}</b> (${item.fecha})</td>
+                            <td><span style="color:var(--text-dim);">Pendiente</span></td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const bClean = det.blanco.map(limpiarNameLocal);
+                const nClean = det.negro.map(limpiarNameLocal);
+
+                const jugoBlanco = bClean.includes(j);
+                const jugoNegro = nClean.includes(j);
+                const jugo = jugoBlanco || jugoNegro;
+
+                if (!jugo) {
+                    filasJornadas += `
+                        <tr style="opacity: 0.6;">
+                            <td><b>J${item.j}</b> (${item.fecha})</td>
+                            <td>❌ No Convocado</td>
+                            <td>-</td>
+                            <td>${det.res}</td>
+                            <td><span class="racha-pill racha-NO">NO JUGÓ</span></td>
+                            <td>-</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const equipo = jugoBlanco ? "Blanco" : "Negro";
+                const [gB, gN] = det.res.split(' - ').map(Number);
+
+                let estadoText = "";
+                let estadoClass = "";
+
+                if (gB === gN) {
+                    estadoText = "Empate";
+                    estadoClass = "racha-E";
+                } else if ((jugoBlanco && gB > gN) || (jugoNegro && gN > gB)) {
+                    estadoText = "Victoria";
+                    estadoClass = "racha-G";
+                } else {
+                    estadoText = "Derrota";
+                    estadoClass = "racha-P";
+                }
+
+                let misGolesFavor = 0;
+                let misAutogoles = 0;
+
+                if (det.golesBlanco && det.golesBlanco !== "Sin goles" && jugoBlanco) {
+                    det.golesBlanco.split(', ').forEach(itemStr => {
+                        const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                        const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                        if (mPP && limpiarNameLocal(mPP[1]) === j) misAutogoles += mPP[2] ? parseInt(mPP[2]) : 1;
+                        if (mNorm && !itemStr.includes("(PP)") && limpiarNameLocal(mNorm[1]) === j) misGolesFavor += parseInt(mNorm[2]);
+                    });
+                }
+                if (det.golesNegro && det.golesNegro !== "Sin goles" && jugoNegro) {
+                    det.golesNegro.split(', ').forEach(itemStr => {
+                        const mPP = itemStr.match(/(.+) \(PP\) \((\d+)\)/) || itemStr.match(/(.+) \(PP\)/);
+                        const mNorm = itemStr.match(/(.+) \((\d+)\)/);
+                        if (mPP && limpiarNameLocal(mPP[1]) === j) misAutogoles += mPP[2] ? parseInt(mPP[2]) : 1;
+                        if (mNorm && !itemStr.includes("(PP)") && limpiarNameLocal(mNorm[1]) === j) misGolesFavor += parseInt(mNorm[2]);
+                    });
+                }
+
+                let desgloseGoles = [];
+                if (misGolesFavor > 0) desgloseGoles.push(`<span class="goal-count">${misGolesFavor} G</span>`);
+                if (misAutogoles > 0) desgloseGoles.push(`<span class="goal-count own-goal">${misAutogoles} PP</span>`);
+                const strGolesMatch = desgloseGoles.length > 0 ? desgloseGoles.join(' ') : '0';
+
+                filasJornadas += `
+                    <tr>
+                        <td><b>J${item.j}</b> (${item.fecha})</td>
+                        <td>✅ Convocado</td>
+                        <td><b>${equipo}</b></td>
+                        <td>${det.res}</td>
+                        <td><span class="racha-pill ${estadoClass}">${estadoText}</span></td>
+                        <td>${strGolesMatch}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('detalle-jugador').innerHTML = `
+                <div style="margin-top:15px;">
+                    <h3 style="margin-bottom:5px;">${j}</h3>
+                    <span class="badge-trophy">${esOriginal ? '🛡️ Miembro Oficial' : '💶 Jugador Suplente'}</span>
+                </div>
+
+                <div class="stats-summary-grid">
+                    <div class="stat-card-mini">
+                        <div class="val">${st.pj}</div>
+                        <div class="lbl">Partidos</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="val">${winRate}%</div>
+                        <div class="lbl">Efectividad</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="val" style="color:var(--green);">${st.pg}</div>
+                        <div class="lbl">Ganados</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="val" style="color:var(--yellow);">${st.goles}</div>
+                        <div class="lbl">Goles (Favor)</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="val" style="color:var(--red);">${st.autogoles}</div>
+                        <div class="lbl">Autogoles (PP)</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:25px;">📋 Desglose por Jornadas</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Jornada</th>
+                                <th>Asistencia</th>
+                                <th>Equipo</th>
+                                <th>Resultado</th>
+                                <th>Estado</th>
+                                <th>Goles / Autogoles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filasJornadas}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function ejecutarComparacion() {
+            const j1 = document.getElementById('compare-j1').value;
+            const j2 = document.getElementById('compare-j2').value;
+
+            if (j1 === j2) {
+                document.getElementById('resultado-comparacion').innerHTML = `<p style="color:var(--yellow); margin-top:15px;">Selecciona dos jugadores diferentes para comparar.</p>`;
+                return;
+            }
+
+            const { stats } = procesarEstadisticas();
+            const st1 = stats[j1] || { pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0, goles: 0, autogoles: 0 };
+            const st2 = stats[j2] || { pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0, goles: 0, autogoles: 0 };
+
+            let juntos = 0, victoriasJuntos = 0, empatesJuntos = 0, derrotasJuntos = 0;
+            let totalEnfrentamientos = 0, victoriasJ1 = 0, empatesEnfrentamiento = 0, victoriasJ2 = 0;
+            let historialEnfrentamientos = [];
+
+            Object.keys(resultadosDetalle).forEach(jNum => {
+                const det = resultadosDetalle[jNum];
+                const b = det.blanco.map(limpiarNameLocal);
+                const n = det.negro.map(limpiarNameLocal);
+                const [gb, gn] = det.res.split(' - ').map(Number);
+
+                if ((b.includes(j1) && b.includes(j2)) || (n.includes(j1) && n.includes(j2))) {
+                    juntos++;
+                    const equipoJ1Gana = (b.includes(j1) && gb > gn) || (n.includes(j1) && gn > gb);
+                    const equipoEmpata = (gb === gn);
+                    if (equipoEmpata) {
+                        empatesJuntos++;
+                    } else if (equipoJ1Gana) {
+                        victoriasJuntos++;
+                    } else {
+                        derrotasJuntos++;
+                    }
+                }
+
+                if ((b.includes(j1) && n.includes(j2)) || (n.includes(j1) && b.includes(j2))) {
+                    totalEnfrentamientos++;
+                    let ganadorDuelo = "Empate";
+                    if (gb === gn) {
+                        empatesEnfrentamiento++;
+                    } else {
+                        if (b.includes(j1)) {
+                            if (gb > gn) { victoriasJ1++; ganadorDuelo = `${j1} (Blanco)`; }
+                            else { victoriasJ2++; ganadorDuelo = `${j2} (Negro)`; }
+                        } else {
+                            if (gn > gb) { victoriasJ1++; ganadorDuelo = `${j1} (Negro)`; }
+                            else { victoriasJ2++; ganadorDuelo = `${j2} (Blanco)`; }
+                        }
+                    }
+                    historialEnfrentamientos.push(`Jornada ${jNum}: ${det.res} -> Ganador: <b>${ganadorDuelo}</b>`);
+                }
+            });
+
+            const winRate1 = st1.pj > 0 ? Math.round((st1.pg / st1.pj) * 100) : 0;
+            const winRate2 = st2.pj > 0 ? Math.round((st2.pg / st2.pj) * 100) : 0;
+            const mediaG1 = st1.pj > 0 ? (st1.goles / st1.pj).toFixed(2) : "0.00";
+            const mediaG2 = st2.pj > 0 ? (st2.goles / st2.pj).toFixed(2) : "0.00";
+
+            let htmlEnfrentamientos = historialEnfrentamientos.length > 0 
+                ? historialEnfrentamientos.map(h => `<li style="margin-bottom: 4px;">${h}</li>`).join('') 
+                : "<li>No se han enfrentado cara a cara todavía.</li>";
+
+            document.getElementById('resultado-comparacion').innerHTML = `
+                <div class="compare-grid">
+                    <div class="compare-column">
+                        <h3 style="color:var(--accent); margin-top:0;">${j1}</h3>
+                        <p><b>Partidos Jugados:</b> ${st1.pj}</p>
+                        <p><b>Victorias / Empates / Derrotas:</b> ${st1.pg} / ${st1.pe} / ${st1.pp}</p>
+                        <p><b>Efectividad (Win %):</b> ${winRate1}%</p>
+                        <p><b>Puntos Totales:</b> ${st1.pts}</p>
+                        <p><b>Goles a Favor:</b> ${st1.goles}</p>
+                        <p><b>Promedio Goles/Partido:</b> ${mediaG1}</p>
+                        <p><b>Autogoles (PP):</b> ${st1.autogoles}</p>
+                    </div>
+                    <div class="compare-column">
+                        <h3 style="color:var(--accent); margin-top:0;">${j2}</h3>
+                        <p><b>Partidos Jugados:</b> ${st2.pj}</p>
+                        <p><b>Victorias / Empates / Derrotas:</b> ${st2.pg} / ${st2.pe} / ${st2.pp}</p>
+                        <p><b>Efectividad (Win %):</b> ${winRate2}%</p>
+                        <p><b>Puntos Totales:</b> ${st2.pts}</p>
+                        <p><b>Goles a Favor:</b> ${st2.goles}</p>
+                        <p><b>Promedio Goles/Partido:</b> ${mediaG2}</p>
+                        <p><b>Autogoles (PP):</b> ${st2.autogoles}</p>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    <h4 style="margin: 0 0 10px 0; color:var(--accent); text-align: center;">Química e Historial Cruzado</h4>
+                    <p style="margin: 5px 0; text-align: center;">🤝 <b>Partidos juntos en el mismo equipo:</b> ${juntos} totales (${victoriasJuntos} victorias, ${empatesJuntos} empates, ${derrotasJuntos} derrotas)</p>
+                    <p style="margin: 5px 0; text-align: center;">⚔️ <b>Enfrentamientos directos (rivales):</b> ${totalEnfrentamientos} totales (${j1}: ${victoriasJ1} | Empates: ${empatesEnfrentamiento} | ${j2}: ${victoriasJ2})</p>
+                    <h5 style="margin: 15px 0 5px 0; color: var(--accent);">📋 Detalle de Enfrentamientos Directos:</h5>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
+                        ${htmlEnfrentamientos}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function actualizarTodo() {
+            const { stats, boteTotal, historialBote } = procesarEstadisticas();
+            renderCalendario();
+            renderClasificacion();
+            renderPichichi();
+            renderContabilidad(boteTotal, historialBote);
+            renderRachas();
+            renderJugadoresSelect();
+            renderGestionJugadores();
+            renderAdminForms();
+        }
+
+        actualizarTodo();
+    </script>
+</body>
+</html>
