@@ -722,7 +722,28 @@
             { j: 32, fecha: "5 de mayo de 2027" }, { j: 33, fecha: "12 de mayo de 2027" }, { j: 34, fecha: "19 de mayo de 2027" }
         ];
 
-        let resultadosDetalle = {};
+        let resultadosDetalle = {
+             1: { res: "6 - 5", blanco: ["ALEX", "IVÁN", "JORGE", "JOSE", "JOSE CARLOS"], negro: ["JUANI", "KMAO", "PABLO", "ROBERTO", "RUBÉN"], golesBlanco: "ALEX (3), IVÁN (2), JORGE (PP) (1)", golesNegro: "JUANI (3), KMAO (2)" },
+            2: { res: "5 - 6", blanco: ["ALEX", "KMAO", "PABLO", "RUBÉN", "JOSE CARLOS"], negro: ["IVÁN", "JORGE", "JOSE", "JUANI", "ROBERTO"], golesBlanco: "ALEX (3), RUBÉN (2)", golesNegro: "ROBERTO (3), JUANI (1), JOSE (PP) (2)" },
+            3: { res: "7 - 6", blanco: ["ALEX", "IVÁN", "JUANI", "ROBERTO", "CARLOS 💶"], negro: ["JORGE", "JOSE", "JOSE CARLOS", "KMAO", "PABLO"], golesBlanco: "ALEX (3), JUANI (2), CARLOS 💶 (1), IVÁN (PP) (1)", golesNegro: "KMAO (3), JORGE (2), PABLO (1)", sustituto: "CARLOS (3 €)" },
+            4: { res: "4 - 6", blanco: ["JOSE", "JOSE CARLOS", "RUBÉN", "KMAO", "IVÁN"], negro: ["ALEX", "JORGE", "JUANI", "PABLO", "ROBERTO"], golesBlanco: "IVÁN (2), RUBÉN (1), KMAO (PP) (1)", golesNegro: "ALEX (3), JUANI (2), ROBERTO (1)" },
+            5: { res: "5 - 5", blanco: ["ALEX", "JORGE", "JOSE", "ROBERTO", "RUBÉN"], negro: ["IVÁN", "JOSE CARLOS", "JUANI", "KMAO", "PABLO"], golesBlanco: "ALEX (2), ROBERTO (2), JORGE (PP) (1)", golesNegro: "JUANI (3), IVÁN (2)" },
+            6: { res: "6 - 3", blanco: ["ALEX", "IVÁN", "PABLO", "KMAO", "PEDRO 💶"], negro: ["JORGE", "JOSE", "JOSE CARLOS", "JUANI", "RUBÉN"], golesBlanco: "ALEX (2), IVÁN (2), PEDRO 💶 (1), PABLO (PP) (1)", golesNegro: "JUANI (2), JORGE (1)", sustituto: "PEDRO (3 €)" },
+            7: { res: "5 - 4", blanco: ["JOSE", "JOSE CARLOS", "JUANI", "ROBERTO", "RUBÉN"], negro: ["ALEX", "IVÁN", "JORGE", "KMAO", "PABLO"], golesBlanco: "JUANI (2), ROBERTO (2), JOSE (PP) (1)", golesNegro: "ALEX (2), IVÁN (1), KMAO (1)" },
+            8: { res: "7 - 3", blanco: ["ALEX", "JORGE", "KMAO", "PABLO", "IVÁN"], negro: ["JOSE", "JOSE CARLOS", "JUANI", "ROBERTO", "RUBÉN"], golesBlanco: "ALEX (3), KMAO (2), PABLO (1), IVÁN (PP) (1)", golesNegro: "JUANI (1), ROBERTO (2)" },
+            9: { res: "5 - 5", blanco: ["JOSE", "JOSE CARLOS", "KMAO", "ROBERTO", "ANTONIO 💶"], negro: ["ALEX", "IVÁN", "JORGE", "JUANI", "PABLO"], golesBlanco: "ROBERTO (2), KMAO (1), ANTONIO 💶 (1), JOSE CARLOS (PP) (1)", golesNegro: "ALEX (2), IVÁN (2), JORGE (1)", sustituto: "ANTONIO (3 €)" },
+            10: { res: "6 - 6", blanco: ["ALEX", "IVÁN", "JUANI", "RUBÉN", "JORGE"], negro: ["JOSE", "JOSE CARLOS", "KMAO", "PABLO", "ROBERTO"], golesBlanco: "ALEX (3), RUBÉN (2), JUANI (1)", golesNegro: "ROBERTO (3), PABLO (2), KMAO (PP) (1)" },
+            11: { res: "6 - 5", blanco: ["ALEX", "IVÁN", "JORGE", "JOSE", "JOSE CARLOS"], negro: ["JUANI", "KMAO", "PABLO", "ROBERTO", "RUBÉN"], golesBlanco: "ALEX (3), IVÁN (2), JORGE (PP) (1)", golesNegro: "JUANI (3), KMAO (2)" },
+            12: { res: "5 - 6", blanco: ["ALEX", "KMAO", "PABLO", "RUBÉN", "JOSE CARLOS"], negro: ["IVÁN", "JORGE", "JOSE", "JUANI", "ROBERTO"], golesBlanco: "ALEX (3), RUBÉN (2)", golesNegro: "ROBERTO (3), JUANI (1), JOSE (PP) (2)" },
+            13: { res: "7 - 6", blanco: ["ALEX", "IVÁN", "JUANI", "ROBERTO", "CARLOS 💶"], negro: ["JORGE", "JOSE", "JOSE CARLOS", "KMAO", "PABLO"], golesBlanco: "ALEX (3), JUANI (2), CARLOS 💶 (1), IVÁN (PP) (1)", golesNegro: "KMAO (3), JORGE (2), PABLO (1)", sustituto: "CARLOS (3 €)" },
+            14: { res: "4 - 6", blanco: ["JOSE", "JOSE CARLOS", "RUBÉN", "KMAO", "IVÁN"], negro: ["ALEX", "JORGE", "JUANI", "PABLO", "ROBERTO"], golesBlanco: "IVÁN (2), RUBÉN (1), KMAO (PP) (1)", golesNegro: "ALEX (3), JUANI (2), ROBERTO (1)" },
+            15: { res: "5 - 5", blanco: ["ALEX", "JORGE", "JOSE", "ROBERTO", "RUBÉN"], negro: ["IVÁN", "JOSE CARLOS", "JUANI", "KMAO", "PABLO"], golesBlanco: "ALEX (2), ROBERTO (2), JORGE (PP) (1)", golesNegro: "JUANI (3), IVÁN (2)" },
+            16: { res: "6 - 3", blanco: ["ALEX", "IVÁN", "PABLO", "KMAO", "PEDRO 💶"], negro: ["JORGE", "JOSE", "JOSE CARLOS", "JUANI", "RUBÉN"], golesBlanco: "ALEX (2), IVÁN (2), PEDRO 💶 (1), PABLO (PP) (1)", golesNegro: "JUANI (2), JORGE (1)", sustituto: "PEDRO (3 €)" },
+            17: { res: "5 - 4", blanco: ["JOSE", "JOSE CARLOS", "JUANI", "ROBERTO", "RUBÉN"], negro: ["ALEX", "IVÁN", "JORGE", "KMAO", "PABLO"], golesBlanco: "JUANI (2), ROBERTO (2), JOSE (PP) (1)", golesNegro: "ALEX (2), IVÁN (1), KMAO (1)" },
+            18: { res: "7 - 3", blanco: ["ALEX", "JORGE", "KMAO", "PABLO", "IVÁN"], negro: ["JOSE", "JOSE CARLOS", "JUANI", "ROBERTO", "RUBÉN"], golesBlanco: "ALEX (3), KMAO (2), PABLO (1), IVÁN (PP) (1)", golesNegro: "JUANI (1), ROBERTO (2)" },
+            19: { res: "5 - 5", blanco: ["JOSE", "JOSE CARLOS", "KMAO", "ROBERTO", "ANTONIO 💶"], negro: ["ALEX", "IVÁN", "JORGE", "JUANI", "PABLO"], golesBlanco: "ROBERTO (2), KMAO (1), ANTONIO 💶 (1), JOSE CARLOS (PP) (1)", golesNegro: "ALEX (2), IVÁN (2), JORGE (1)", sustituto: "ANTONIO (3 €)" },
+            20: { res: "6 - 6", blanco: ["ALEX", "IVÁN", "JUANI", "RUBÉN", "JORGE"], negro: ["JOSE", "JOSE CARLOS", "KMAO", "PABLO", "ROBERTO"], golesBlanco: "ALEX (3), RUBÉN (2), JUANI (1)", golesNegro: "ROBERTO (3), PABLO (2), KMAO (PP) (1)" }
+        };
         let movimientosContabilidad = []; // Almacena registros manuales de contabilidad
 
         function limpiarNombre(nombre) {
